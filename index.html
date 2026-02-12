@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IbadahKu - Panduan Ibadah Lengkap</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Amiri:wght@400;700&display=swap');
+
+        :root {
+            --pink-soft: #fff1f5;
+            --pink-primary: #ff85a1;
+            --pink-dark: #d81b60;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--pink-soft);
+            color: #1e293b;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* --- COVER SCREEN --- */
+        #cover-screen {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #fff1f5 0%, #ffe4ec 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            transition: transform 0.8s cubic-bezier(0.87, 0, 0.13, 1);
+        }
+
+        /* --- CHARACTER ANIMATION DENGAN ALIS --- */
+        .character-box {
+            position: relative;
+            width: 200px;
+            height: 280px;
+            margin-bottom: 30px;
+        }
+        .hijab-outer {
+            position: absolute;
+            top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 150px; height: 180px;
+            background: #ffb1c1;
+            border-radius: 75px 75px 50px 50px;
+            z-index: 1;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+        .face-inner {
+            position: absolute;
+            top: 35px; left: 50%;
+            transform: translateX(-50%);
+            width: 105px; height: 120px;
+            background: #ffe0c5;
+            border-radius: 50px 50px 45px 45px;
+            z-index: 2;
+        }
+        /* Alis baru */
+        .eyebrow {
+            position: absolute;
+            top: 45px;
+            width: 20px;
+            height: 3px;
+            background: #4a3728;
+            border-radius: 2px;
+            transform: rotate(-5deg);
+        }
+        .eyebrow.l { left: 20px; }
+        .eyebrow.r { right: 20px; transform: rotate(5deg); }
+        
+        .eye {
+            position: absolute;
+            top: 55px;
+            width: 12px; height: 12px;
+            background: #333;
+            border-radius: 50%;
+        }
+        .eye.l { left: 25px; }
+        .eye.r { right: 25px; }
+        .smile {
+            position: absolute;
+            bottom: 25px; left: 50%;
+            transform: translateX(-50%);
+            width: 30px; height: 15px;
+            border-bottom: 3px solid #ff5e7e;
+            border-radius: 0 0 15px 15px;
+        }
+        .outfit {
+            position: absolute;
+            top: 175px; left: 50%;
+            transform: translateX(-50%);
+            width: 160px; height: 100px;
+            background: var(--pink-primary);
+            border-radius: 40px 40px 10px 10px;
+        }
+
+        /* --- CONTENT STYLES --- */
+        .arabic {
+            font-family: 'Amiri', serif;
+            font-size: 1.8rem;
+            line-height: 3.2rem;
+            text-align: right;
+            direction: rtl;
+            color: #1e293b;
+            padding: 10px 0;
+        }
+        .card {
+            background: white;
+            border-radius: 28px;
+            padding: 24px;
+            margin: 16px;
+            box-shadow: 0 10px 25px rgba(255, 133, 161, 0.1);
+            border: 1px solid #fff;
+        }
+        .latin {
+            color: var(--pink-dark);
+            font-weight: 600;
+            font-style: italic;
+            font-size: 1rem;
+            margin: 10px 0;
+        }
+        .meaning {
+            background: #fdf2f4;
+            padding: 15px;
+            border-radius: 16px;
+            border-left: 5px solid var(--pink-primary);
+            font-size: 0.95rem;
+            color: #475569;
+        }
+
+        /* --- NAVIGATION --- */
+        .nav-bar {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 10px 25px;
+            border-top: 1px solid #ffe4ec;
+            z-index: 1000;
+        }
+        .nav-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #94a3b8;
+            font-weight: 700;
+            font-size: 0.6rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .nav-link.active { color: var(--pink-dark); }
+        .nav-link i { font-size: 1.1rem; margin-bottom: 4px; }
+
+        /* --- STORY STYLES --- */
+        .story-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            margin: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid #fff;
+        }
+        .story-header {
+            background: linear-gradient(to right, var(--pink-primary), #ffb1c1);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .story-content {
+            padding: 20px;
+            line-height: 1.6;
+            color: #475569;
+            font-size: 0.9rem;
+        }
+        .dzikir-tag {
+            display: inline-block;
+            background: var(--pink-soft);
+            color: var(--pink-dark);
+            padding: 2px 10px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        /* --- QUIZ STYLES --- */
+        .option-btn {
+            width: 100%;
+            padding: 16px;
+            margin-bottom: 10px;
+            background: white;
+            border: 2px solid #ffe4ec;
+            border-radius: 18px;
+            text-align: left;
+            font-weight: 600;
+            color: #334155;
+            transition: 0.2s;
+        }
+        .option-btn.correct { background: #dcfce7; border-color: #22c55e; color: #166534; }
+        .option-btn.wrong { background: #fee2e2; border-color: #ef4444; color: #991b1b; }
+        .progress-bar {
+            height: 6px;
+            background: #eee;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--pink-primary);
+            transition: width 0.3s;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Layar Utama (Cover) -->
+    <div id="cover-screen">
+        <div class="character-box">
+            <div class="hijab-outer"></div>
+            <div class="face-inner">
+                <!-- Sekarang sudah punya alis -->
+                <div class="eyebrow l"></div>
+                <div class="eyebrow r"></div>
+                <div class="eye l"></div><div class="eye r"></div>
+                <div class="smile"></div>
+            </div>
+            <div class="outfit"></div>
+        </div>
+        <h1 class="text-4xl font-bold text-pink-600 mb-2">IbadahKu</h1>
+        <p class="text-gray-500 mb-10 text-center px-8">Mari belajar tata cara ibadah dengan benar</p>
+        <button onclick="enterApp()" class="bg-pink-600 text-white px-12 py-4 rounded-full font-bold shadow-lg shadow-pink-200 hover:scale-105 active:scale-95 transition">Buka Aplikasi</button>
+    </div>
+
+    <!-- Konten Utama -->
+    <div id="main-content" class="hidden min-h-screen pt-4 pb-32">
+        <div id="header-title" class="text-center mb-4">
+            <h2 id="current-tab-name" class="text-xl font-bold text-pink-700">Panduan Wudhu</h2>
+        </div>
+        <div id="render-target"></div>
+    </div>
+
+    <!-- Menu Navigasi -->
+    <nav id="bottom-nav" class="nav-bar hidden">
+        <div class="nav-link active" onclick="switchTab('wudhu', this)">
+            <i class="fas fa-faucet"></i><span>Wudhu</span>
+        </div>
+        <div class="nav-link" onclick="switchTab('sholat', this)">
+            <i class="fas fa-pray"></i><span>Sholat</span>
+        </div>
+        <div class="nav-link" onclick="switchTab('doa', this)">
+            <i class="fas fa-hands"></i><span>Doa & Dzikir</span>
+        </div>
+        <div class="nav-link" onclick="switchTab('kisah', this)">
+            <i class="fas fa-book-open"></i><span>25 Nabi</span>
+        </div>
+        <div class="nav-link" onclick="switchTab('kuis', this)">
+            <i class="fas fa-brain"></i><span>Kuis</span>
+        </div>
+    </nav>
+
+<script>
+    function enterApp() {
+        document.getElementById('cover-screen').style.transform = 'translateY(-100%)';
+        document.getElementById('main-content').classList.remove('hidden');
+        document.getElementById('bottom-nav').classList.remove('hidden');
+        switchTab('wudhu');
+    }
+
+    // --- DATA TETAP SAMA ---
+    const wudhuSteps = [
+        { t: "1. Niat Wudhu", a: "نَوَيْتُ الْوُضُوْءَ لِرَفْعِ الْحَدَثِ الْأَصْغَرِ فَرْضًا لِلّٰهِ تَعَالَى", l: "Nawaitul wudlû-a li raf‘il ḫadatsil asghari fardlal lillâhi ta‘âlâ", i: "Saya niat berwudhu untuk menghilangkan hadats kecil, fardu karena Allah Ta'ala." },
+        { t: "2. Membaca Basmalah", a: "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ", l: "Bismillâhir raḫmânir raḫîm", i: "Dengan menyebut nama Allah Yang Maha Pengasih lagi Maha Penyayang." },
+        { t: "3. Membasuh Telapak Tangan", a: "اَللّٰهُمَّ احْفَظْ يَدِيْ مِنْ مَعَاصِيْكَ كُلِّهَا", l: "Allâhumma ihfadh yadî min ma‘âshîka kullihâ", i: "Ya Allah, jagalah tanganku dari segala bentuk kemaksiatan." },
+        { t: "4. Berkumur-kumur", a: "اَللّٰهُمَّ أَعِنِّيْ عَلَى ذِكْرِكَ وَشُكْرِكَ وَحُسْنِ عِبَادَتِكَ", l: "Allâhumma a‘innî ‘alâ dzikrika wa syukrika wa ḫusni ‘ibâdatik", i: "Ya Allah, tolonglah aku untuk senantiasa mengingat-Mu, bersyukur kepada-Mu, dan beribadah dengan baik kepada-Mu." },
+        { t: "5. Membasuh Lubang Hidung", a: "اَللّٰهُمَّ أَرِحْنِيْ رَائِحَةَ الْجَنَّةِ", l: "Allâhumma ariḫnî râ-iḫatal jannati", i: "Ya Allah, berikanlah aku mencium wangi surga." },
+        { t: "6. Membasuh Muka (Wajib)", a: "اَللّٰهُمَّ بَيِّضْ وَجْهِي يَوْمَ تَبْيَضُّ وُجُوْهٌ وَتَسْوَدُّ وُجُوْهٌ", l: "Allâhumma bayyidl wajhî yauma tabyadl-dlu wujûhun wa taswaddu wujûh", i: "Ya Allah, putihkanlah wajahku di hari wajah-wajah memutih dan hitamkanlah wajah-wajah orang kafir." },
+        { t: "7. Membasuh Tangan Kanan hingga Siku", a: "اَللّٰهُمَّ أَعْطِنِيْ كِتَابِيْ بِيَمِيْنِيْ وَحَاسِبْنِيْ حِسَابًا يَسِيْرًا", l: "Allâhumma a‘thinî kitâbî biyamînî wa ḫâsibnî ḫisâban yasîran", i: "Ya Allah, berikanlah buku amalku di tangan kananku dan hisablah aku dengan hisab yang mudah." },
+        { t: "8. Membasuh Tangan Kiri hingga Siku", a: "اَللّٰهُمَّ لَا تُعْطِنِيْ كِتَابِيْ بِشِمَالِيْ وَلَا مِنْ وَرَآءِ ظَهْرِيْ", l: "Allâhumma lâ tu‘thinî kitâbî bisyimâlî wa lâ min warâ-i zhahrî", i: "Ya Allah, jangan Engkau berikan catatan amalku pada tangan kiriku atau dari belakang punggungku." },
+        { t: "9. Mengusap Sebagian Kepala", a: "اَللّٰهُمَّ حَرِّمْ شَعْرِيْ وَبَشَرِيْ عَلَى النَّارِ", l: "Allâhumma ḫarrim sya‘rî wa basyarî ‘alan nâr", i: "Ya Allah, haramkanlah rambut dan kulitku dari jilatan api neraka." },
+        { t: "10. Membasuh Kedua Telinga", a: "اَللّٰهُمَّ اجْعَلْنِي مِنَ الَّذِيْنَ يَسْتَمِعُوْنَ الْقَوْلَ فَيَتَّبِعُوْنَ أَحْسَنَهُ", l: "Allâhummaj‘alnî minal ladzîna yastami‘ûnal qaula fayattabi‘ûna aḫsanah", i: "Ya Allah, jadikanlah aku termasuk orang-orang yang mendengarkan ucapan dan mengikuti yang terbaik di antaranya." },
+        { t: "11. Membasuh Kedua Kaki hingga Mata Kaki", a: "اَللّٰهُمَّ ثَبِّتْ قَدَمَيَّ عَلَى الصِّرَاطِ يَوْمَ تَزِلُّ فِيْهِ الْأَقْدَامُ", l: "Allâhumma thabbit qadamayya ‘alas shirâthi yauma tazillu fîhil aqdâm", i: "Ya Allah, kokohkanlah kakiku di atas titian (shirath) pada hari di mana kaki-kaki terpeleset." },
+        { t: "12. Doa Setelah Wudhu", a: "أَشْهَدُ أَنْ لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيْكَ لَهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُوْلُهُ. اَللّٰهُمَّ اجْعَلْنِيْ مِنَ التَّوَّابِيْنَ وَاجْعَلْنِيْ مِنَ الْمُتَطَهِّرِيْنَ وَاجْعَلْنِيْ مِنْ عِبَادِكَ الصَّالِحِيْنَ", l: "Asyhadu allâ ilâha illallâhu waḫdahû lâ syarîka lahu wa asyhadu anna muhammadan ‘abduhû wa rasûluh. Allâhummaj‘alnî minat tawwâbîna waj‘alnî minal mutathahhirîna waj‘alnî min ‘ibâdikas shâliḫîn", i: "Aku bersaksi tidak ada Tuhan selain Allah semata, tidak ada sekutu bagi-Nya. Dan aku bersaksi Muhammad hamba dan utusan-Nya. Ya Allah jadikanlah aku termasuk orang yang bertaubat, orang yang suci, dan hamba yang shaleh." }
+    ];
+
+    const sholatSteps = [
+        { t: "1. Niat Sholat Subuh", a: "أُصَلِّي فَرْضَ الصُّبْحِ رَكْعَتَيْنِ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلّٰهِ تَعَالَى", l: "Ushallî fardhas subḫi rak‘ataini mustaqbilal qiblati adâ’an lillâhi ta‘âlâ", i: "Aku niat sholat fardu subuh dua rakaat menghadap kiblat karena Allah Ta'ala." },
+        { t: "2. Takbiratul Ihram", a: "اللّٰهُ أَكْبَرُ", l: "Allâhu Akbar", i: "Allah Maha Besar." },
+        { t: "3. Doa Iftitah (Lengkap)", a: "اللّٰهُ أَكْبَرُ كَبِيْرًا وَالْحَمْدُ لِلّٰهِ كَثِيْرًا وَسُبْحَانَ اللّٰهِ بُكْرَةً وَأَصِيْلًا. وَجَّهْتُ وَجْهِيَ لِلَّذِيْ فَطَرَ السَّمَاوَاتِ وَالْأَرْضَ حَنِيْفًا مُسْلِمًا وَمَا أَنَا مِنَ الْمُشْرِكِيْنَ. إِنَّ صَلَاتِيْ وَنُسُكِيْ وَمَحْيَايَ وَمَمَاتِيْ لِلّٰهِ رَبِّ الْعَالَمِيْنَ. لَا شَرِيْكَ لَهُ وَبِذٰلِكَ أُمِرْتُ وَأَنَا مِنَ الْمُسْلِمِيْنَ", l: "Allâhu akbar kabîran walhamdulillâhi katsîran wa subhânallâhi bukratan wa ashîlan. Wajjahtu wajhiya lilladzî fatharas samâwâti wal ardla hanîfan musliman wa ana minal musyrikîn. Inna shalâtî wa nusukî wa maḫyâya wa mamâtî lillâhi rabbil ‘âlamîn. Lâ syarîka lahû wa bidzâlika umirtu wa ana minal muslimîn", i: "Allah Maha Besar sesempurna kebesaran, segala puji bagi Allah sebanyak-banyaknya... Sesungguhnya shalatku, ibadahku, hidupku dan matiku hanya karena Allah, Tuhan semesta alam." },
+        { t: "4. Al-Fatihah", a: "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ. اَلْحَمْدُ لِلّٰهِ رَبِّ الْعَالَمِيْنَ. الرَّحْمٰنِ الرَّحِيْمِ. مٰلِكِ يَوْمِ الدِّيْنِ. اِيَّاكَ نَعْبُدُ وَاِيَّاكَ نَسْتَعِيْنُ. اِهْدِنَا الصِّرَاطَ الْمُسْتَقِيْمَ. صِرَاطَ الَّذِيْنَ اَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوْبِ عَلَيْهِمْ وَلَا الضَّالِّيْنَ", l: "Bismillâhir raḫmânir raḫîm. Al-ḫamdu lillâhi rabbil ‘âlamîn. Ar-raḫmânir raḫîm. Mâliki yaumid dîn. Iyyâka na‘budu wa iyyâka nasta‘în. Ihdinash shirâthal mustaqîm. Shirâthalladzîna an‘amta ‘alaihim ghairil maghdlûbi ‘alaihim waladl dlâllîn", i: "Dengan menyebut nama Allah yang Maha Pemurah lagi Maha Penyayang. Segala puji bagi Allah, Tuhan semesta alam... Tunjukilah kami jalan yang lurus." },
+        { t: "5. Rukuk", a: "سُبْحَانَ رَبِّيَ الْعَظِيْمِ وَبِحَمْدِهِ", l: "Subhâna rabbiyal ‘adhîmi wa biḫamdih (3x)", i: "Maha Suci Tuhanku Yang Maha Agung dengan segala puji bagi-Nya." },
+        { t: "6. Iktidal", a: "سَمِعَ اللّٰهُ لِمَنْ حَمِدَهُ. رَبَّنَا لَكَ الْحَمْدُ مِلْءُ السَّمَاوَاتِ وَمِلْءُ الْأَرْضِ وَمِلْءُ مَا شِئْتَ مِنْ شَيْءٍ بَعْدُ", l: "Sami‘allâhu liman ḫamidah. Rabbanâ lakal ḫamdu mil’us samâwâti wa mil’ul ardli wa mil’u mâ syi’ta min syai’in ba‘du", i: "Allah mendengar orang yang memuji-Nya. Wahai Tuhan kami, bagi-Mu segala puji sepenuh langit dan sepenuh bumi..." },
+        { t: "7. Sujud", a: "سُبْحَانَ رَبِّيَ الْأَعْلَى وَبِحَمْدِهِ", l: "Subhâna rabbiyal a‘lâ wa biḫamdih (3x)", i: "Maha Suci Tuhanku Yang Maha Tinggi dengan segala puji bagi-Nya." },
+        { t: "8. Duduk Antara Dua Sujud", a: "رَبِّ اغْفِرْ لِيْ وَارْحَمْنِيْ وَاجْبُرْنِيْ وَارْفَعْنِيْ وَارْزُقْنِيْ وَاهْدِيْنِيْ وَعَافِنِيْ وَاعْفُ عَنِّيْ", l: "Rabbighfirlî warḫamnî wajburnî warfa‘nî warzuqnî wahdinî wa ‘âfinî wa‘fu ‘annî", i: "Ya Allah, ampunilah aku, kasihanilah aku, cukupilah kekuranganku, angkatlah derajatku, berilah aku rezeki, berilah aku petunjuk, berilah aku kesehatan, dan maafkanlah aku." },
+        { t: "9. Tasyahud Akhir (Lengkap)", a: "التَّحِيَّاتُ الْمُبَارَكَاتُ الصَّلَاوَاتُ الطَّيِّبَاتُ لِلّٰهِ. السَّلَامُ عَلَيْكَ أَيُّهَا النَّبِيُّ وَرَحْمَةُ اللّٰهِ وَبَرَكَاتُهُ. السَّلَامُ عَلَيْنَا وَعَلَى عِبَادِ اللّٰهِ الصَّالِحِيْنَ. أَشْهَدُ أَنْ لَا إِلٰهَ إِلَّا اللّٰهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا رَسُوْلُ اللّٰهِ. اَللّٰهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ كَمَا صَلَيْتَ عَلَى إِبْرَاهِيْمَ وَعَلَى آلِ إِبْرَاهِيْمَ وَبَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ كَمَا بَارَكْتَ عَلَى إِبْرَاهِيْمَ وَعَلَى آلِ إِبْرَاهِيْمَ فِي الْعَالَمِيْنَ إِنَّكَ حَمِيْدٌ مَجِيْدٌ", l: "At-tahiyyâtul mubârakât... Asyhadu allâ ilâha illallâh wa asyhadu anna muhammadar rasûlullâh... fîl ‘âlamîna innaka ḫamîdun majîd", i: "Segala penghormatan yang penuh keberkahan... Aku bersaksi tidak ada Tuhan selain Allah dan aku bersaksi Muhammad utusan Allah... Sesungguhnya Engkau Maha Terpuji lagi Maha Mulia." },
+        { t: "10. Salam", a: "السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللّٰهِ", l: "Assalâmu ‘alaikum wa raḫmatullâh", i: "Semoga keselamatan dan rahmat Allah tercurah kepadamu." }
+    ];
+
+    const doaDzikirList = [
+        // Dzikir
+        { t: "Dzikir: Istighfar (3x)", a: "أَسْتَغْفِرُ اللهَ الْعَظِيْمَ", l: "Astaghfirullahal 'adzim", i: "Aku memohon ampun kepada Allah yang Maha Agung.", isDzikir: true },
+        { t: "Dzikir: Tasbih (33x)", a: "سُبْحَانَ اللهِ", l: "Subhanallah", i: "Maha Suci Allah.", isDzikir: true },
+        { t: "Dzikir: Tahmid (33x)", a: "اَلْحَمْدُ لِلّٰهِ", l: "Alhamdulillah", i: "Segala puji bagi Allah.", isDzikir: true },
+        { t: "Dzikir: Takbir (33x)", a: "اَللّٰهُ أَكْبَرُ", l: "Allahu Akbar", i: "Allah Maha Besar.", isDzikir: true },
+        // Doa
+        { t: "Doa Kedua Orang Tua", a: "اللَّهُمَّ اغْفِرْ لِي وَلِوَالِدَيَّ وَارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا", l: "Allâhummaghfir lî wa liwâli dayya warḫamhumâ kamâ rabbayânî shaghîrâ", i: "Ya Allah, ampunilah dosaku dan dosa kedua orang tuaku..." },
+        { t: "Doa Dunia Akhirat", a: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ", l: "Rabbanâ âtinâ fid dunyâ ḫasanatan...", i: "Ya Tuhan kami, berilah kami kebaikan di dunia dan kebaikan di akhirat..." },
+        { t: "Doa Sebelum Makan", a: "اللَّهُمَّ بَارِكْ لَنَا فِيمَا رَزَقْتَنَا وَقِنَا عَذَابَ النَّارِ", l: "Allâhumma bârik lanâ fî mâ razaqtanâ...", i: "Ya Allah, berkahilah kami atas apa yang Engkau rezekikan..." }
+    ];
+
+    const kisah25Nabi = [
+        { n: "1. Nabi Adam AS", k: "Manusia pertama dan Nabi pertama. Diciptakan dari tanah dan tinggal di surga sebelum diturunkan ke bumi." },
+        { n: "2. Nabi Idris AS", k: "Nabi pertama yang pandai menulis dengan kalam, menjahit baju, dan menguasai ilmu perbintangan." },
+        { n: "3. Nabi Nuh AS", k: "Membangun kapal besar untuk menyelamatkan umat beriman dan hewan dari banjir besar (topan)." },
+        { n: "4. Nabi Hud AS", k: "Diutus untuk kaum 'Ad yang sombong. Kaumnya dibinasakan dengan angin yang sangat dingin lagi kencang." },
+        { n: "5. Nabi Shaleh AS", k: "Mukjizatnya adalah seekor unta betina yang keluar dari batu besar untuk kaum Tsamud." },
+        { n: "6. Nabi Ibrahim AS", k: "Bapak para Nabi. Tidak hangus dibakar api Raja Namrud dan membangun Ka'bah bersama Ismail." },
+        { n: "7. Nabi Luth AS", k: "Keponakan Nabi Ibrahim. Diutus untuk kaum Sodom yang memiliki perilaku menyimpang." },
+        { n: "8. Nabi Ismail AS", k: "Putra Nabi Ibrahim yang sabar. Rela disembelih (perintah Allah) lalu digantikan dengan domba." },
+        { n: "9. Nabi Ishaq AS", k: "Putra kedua Nabi Ibrahim dari Siti Sarah. Menjadi nenek moyang Bani Israil." },
+        { n: "10. Nabi Ya'qub AS", k: "Putra Nabi Ishaq. Ayah dari 12 putra, termasuk Nabi Yusuf AS." },
+        { n: "11. Nabi Yusuf AS", k: "Nabi yang dianugerahi ketampanan luar biasa dan kemampuan menafsirkan mimpi." },
+        { n: "12. Nabi Ayyub AS", k: "Simbol kesabaran. Diuji dengan penyakit parah dan kehilangan kekayaan selama bertahun-tahun." },
+        { n: "13. Nabi Syuaib AS", k: "Diutus untuk kaum Madyan yang curang dalam timbangan dagang." },
+        { n: "14. Nabi Musa AS", k: "Membebaskan Bani Israil dari Firaun. Mukjizatnya membelah laut dengan tongkat." },
+        { n: "15. Nabi Harun AS", k: "Saudara Nabi Musa yang pandai berbicara. Menemani Musa berdakwah kepada Firaun." },
+        { n: "16. Nabi Dzulkifli AS", k: "Putra Nabi Ayyub. Dikenal sangat sabar dan teguh dalam memegang janji." },
+        { n: "17. Nabi Daud AS", k: "Mengalahkan Jalut. Mukjizatnya memiliki suara merdu dan bisa melunakkan besi dengan tangan." },
+        { n: "18. Nabi Sulaiman AS", k: "Nabi terkaya yang bisa berbicara dengan hewan (semut, burung) dan memerintah bangsa Jin." },
+        { n: "19. Nabi Ilyas AS", k: "Diutus untuk kaum penyembah berhala bernama Ba'al." },
+        { n: "20. Nabi Ilyasa AS", k: "Penerus Nabi Ilyas. Membimbing kaumnya agar kembali menyembah Allah SWT." },
+        { n: "21. Nabi Yunus AS", k: "Ditelan ikan paus raksasa selama tiga hari setelah meninggalkan kaumnya yang ingkar." },
+        { n: "22. Nabi Zakaria AS", k: "Ayah dari Nabi Yahya. Tetap berdoa meski sudah tua sampai akhirnya dikaruniai putra." },
+        { n: "23. Nabi Yahya AS", k: "Sangat hormat pada orang tua dan teguh menjaga hukum Taurat." },
+        { n: "24. Nabi Isa AS", k: "Lahir tanpa ayah dari Maryam. Mukjizatnya bisa menyembuhkan orang buta dan menghidupkan orang mati (izin Allah)." },
+        { n: "25. Nabi Muhammad SAW", k: "Penutup para Nabi. Membawa risalah Islam untuk seluruh alam semesta. Al-Qur'an adalah mukjizat terbesarnya." }
+    ];
+
+    const quizData = [
+        { q: "Apa rukun wudhu yang pertama?", a: ["Mencuci tangan", "Niat", "Membasuh muka"], c: 1 },
+        { q: "Membasuh muka dalam wudhu hukumnya?", a: ["Sunnah", "Mubazir", "Wajib/Rukun"], c: 2 },
+        { q: "Apa gerakan sholat setelah Rukuk?", a: ["Sujud", "Iktidal", "Takbir"], c: 1 },
+        { q: "Berapa kali sunnah membasuh anggota wudhu?", a: ["1 kali", "2 kali", "3 kali"], c: 2 },
+        { q: "Bacaan 'Subhana rabbiyal a'la' dibaca saat?", a: ["Rukuk", "Sujud", "Takbir"], c: 1 },
+        { q: "Setelah membasuh tangan sampai siku, urutan wudhu selanjutnya adalah?", a: ["Mencuci kaki", "Mengusap kepala", "Membasuh telinga"], c: 1 },
+        { q: "Membasuh telinga dalam wudhu hukumnya?", a: ["Wajib", "Sunnah", "Haram"], c: 1 }
+    ];
+
+    let currentQuizIdx = 0;
+    let quizScore = 0;
+
+    function renderItem(item) {
+        return `
+            <div class="card animate-fade-in">
+                ${item.isDzikir ? `<span class="dzikir-tag">DZIKIR</span>` : ''}
+                <h3 class="font-bold text-center text-gray-700 text-lg mb-3 underline decoration-pink-200 underline-offset-8">${item.t}</h3>
+                <div class="arabic">${item.a}</div>
+                <div class="latin">${item.l}</div>
+                <div class="meaning">
+                    <span class="font-bold text-pink-500">Artinya:</span><br>
+                    "${item.i}"
+                </div>
+            </div>
+        `;
+    }
+
+    function switchTab(tab, el) {
+        const target = document.getElementById('render-target');
+        const title = document.getElementById('current-tab-name');
+        
+        if(el) {
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        target.innerHTML = '';
+        if(tab === 'wudhu') {
+            title.innerText = "Panduan Wudhu";
+            wudhuSteps.forEach(s => target.innerHTML += renderItem(s));
+        } else if(tab === 'sholat') {
+            title.innerText = "Bacaan Sholat";
+            sholatSteps.forEach(s => target.innerHTML += renderItem(s));
+        } else if(tab === 'doa') {
+            title.innerText = "Doa & Dzikir Harian";
+            doaDzikirList.forEach(s => target.innerHTML += renderItem(s));
+        } else if(tab === 'kisah') {
+            title.innerText = "Kisah Lengkap 25 Nabi";
+            kisah25Nabi.forEach(kn => {
+                target.innerHTML += `
+                    <div class="story-card animate-fade-in">
+                        <div class="story-header">${kn.n}</div>
+                        <div class="story-content">${kn.k}</div>
+                    </div>
+                `;
+            });
+        } else if(tab === 'kuis') {
+            title.innerText = "Kuis Ibadah";
+            currentQuizIdx = 0; quizScore = 0;
+            renderQuiz();
+        }
+        window.scrollTo(0,0);
+    }
+
+    function renderQuiz() {
+        const target = document.getElementById('render-target');
+        if(currentQuizIdx >= quizData.length) {
+            target.innerHTML = `
+                <div class="card text-center p-10">
+                    <div class="text-6xl mb-4">⭐</div>
+                    <h2 class="text-2xl font-bold text-pink-600 mb-2">Selesai!</h2>
+                    <p class="text-gray-600 mb-6">Skor kamu: ${quizScore}/${quizData.length}</p>
+                    <button onclick="switchTab('kuis')" class="bg-pink-600 text-white px-10 py-3 rounded-full font-bold shadow-lg">Coba Lagi</button>
+                </div>
+            `;
+            return;
+        }
+
+        const q = quizData[currentQuizIdx];
+        const progress = (currentQuizIdx / quizData.length) * 100;
+
+        target.innerHTML = `
+            <div class="card">
+                <div class="progress-bar"><div class="progress-fill" style="width: ${progress}%"></div></div>
+                <h2 class="text-lg font-bold text-gray-800 mb-8">${q.q}</h2>
+                <div id="quiz-options">
+                    ${q.a.map((opt, i) => `
+                        <button class="option-btn" onclick="handleAnswer(${i})">${opt}</button>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+
+    function handleAnswer(choiceIdx) {
+        const correctIdx = quizData[currentQuizIdx].c;
+        const btns = document.querySelectorAll('.option-btn');
+        btns.forEach(b => b.disabled = true);
+        if(choiceIdx === correctIdx) {
+            btns[choiceIdx].classList.add('correct');
+            quizScore++;
+        } else {
+            btns[choiceIdx].classList.add('wrong');
+            btns[correctIdx].classList.add('correct');
+        }
+        setTimeout(() => {
+            currentQuizIdx++;
+            renderQuiz();
+        }, 1000);
+    }
+</script>
+</body>
+</html>
